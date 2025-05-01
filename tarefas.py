@@ -91,7 +91,7 @@ def cmç():
         btn_tarefa.place(x=158,y=66)
 
 
-    #Função SALVAR
+    #Função SALVAR(Provavelmente vai ser trocada por um SAVE AUTOMATICO!)
     def salvar():
         pass
 
