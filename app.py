@@ -1,7 +1,10 @@
 import customtkinter as ctk
+from paginas.pagina1 import Pagina1
+from paginas.pagina2 import Pagina2
+
 
 ctk.set_appearance_mode("dark")
-ctk.set_default_color_theme("dark-blue")
+ctk.set_default_color_theme("green")
 
 class App(ctk.CTk):
     def __init__(self):
@@ -25,7 +28,7 @@ class App(ctk.CTk):
         self.grid_columnconfigure(1, weight=1)
 
         self._criar_sidebar()
-        #self._criar_area_principal()
+        self._criar_area_principal()
 
     def _criar_sidebar(self):
         self.sidebar = ctk.CTkFrame(self, width=200, corner_radius=0)
@@ -37,6 +40,29 @@ class App(ctk.CTk):
 
         self.btn_pagina1 = ctk.CTkButton(self.sidebar, text="Tarefas", command=lambda: self._trocar_pagina("pagina1"))
         self.btn_pagina1.grid(row=1,column=0,padx=20,pady=5,sticky="ew")
+
+        self.btn_pagina2 = ctk.CTkButton(self.sidebar, text="Concluídas", command=lambda: self._trocar_pagina("pagina2"))
+        self.btn_pagina2.grid(row=5,column=0,padx=20,pady=5,sticky="ew")
+
+    def _criar_area_principal(self):
+        self.caixa = ctk.CTkFrame(self)
+        self.caixa.grid(row=0, column=1,padx=20,pady=20,sticky="nsew")
+        self.caixa.grid_rowconfigure(0,weight=1)
+        self.caixa.grid_columnconfigure(0,weight=1)
+
+        self.paginas: dict[str, ctk.CTkFrame] = {}
+
+        for PaginaClasse in (Pagina1, Pagina2):
+            pagina = PaginaClasse(self.caixa)
+            self.paginas[pagina.NOME] = pagina
+            pagina.grid(row=0,column=0,sticky="nsew")
+
+        self._trocar_pagina("pagina1")
+
+    def _trocar_pagina(self, nome: str):
+        pagina = self.paginas.get(nome)
+        if pagina:
+            pagina.tkraise()            
 
 if __name__ == "__main__":
     app = App()

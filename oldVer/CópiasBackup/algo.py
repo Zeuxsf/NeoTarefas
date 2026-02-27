@@ -17,7 +17,6 @@ def carregarjson():
 janela = ctk.CTk(fg_color='darkgoldenrod1')
 janela.geometry('700x500')
 janela.title('Neo Tarefas')
-janela.iconbitmap('./ico.ico')
 janela.resizable(False, False)
 
 jnl = ctk.CTkFrame(janela,fg_color='saddle brown',width=680,height=480,border_color='darkgoldenrod2',border_width=5)
