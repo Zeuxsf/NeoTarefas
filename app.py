@@ -2,7 +2,6 @@ import customtkinter as ctk
 from paginas.pagina1 import Pagina1
 from paginas.pagina2 import Pagina2
 
-
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("green")
 
