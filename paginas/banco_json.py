@@ -8,7 +8,7 @@ def carregar_json():
             dados = json.load(file)
     else:
         print("nao_existe")
-        dados = {"tarefas": [], "concluidas": []}
+        dados = {"tarefas": [], "concluidas": [], "modo": "dark"}
     
     return dados
 

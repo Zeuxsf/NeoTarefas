@@ -26,14 +26,6 @@ class Pagina2(ctk.CTkFrame):
         
         for i in self.app.dados["concluidas"]:
             self._carregar_tarefa(tarefa=i)
-
-    """
-    ---
-    def _popup(self): POPUP interessante
-            popup = ctk.CTkFrame(self,width=500,height=300,border_color='white',border_width=1)
-            popup.grid(row=1,column=0)
-    ---        
-    """
     
     def _carregar_tarefa(self,tarefa=None):
 
@@ -65,4 +57,4 @@ class Pagina2(ctk.CTkFrame):
         btn.grid(row=0, column=0,padx=1,pady=5,sticky="w")
 
         btn_excluir = ctk.CTkButton(tarefa_frame,text="Excluir",width=25,height=25, command=lambda: excluir_tarefa(self,texto, tarefa_frame))
-        btn_excluir.grid(row=0, column=1,padx=1,pady=5,sticky="w")
+        btn_excluir.grid(row=0, column=1,padx=(5,1),pady=5,sticky="w")

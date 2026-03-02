@@ -3,17 +3,15 @@ from paginas.pagina1 import Pagina1
 from paginas.pagina2 import Pagina2
 from paginas.banco_json import carregar_json, salvar_json
 
-ctk.set_appearance_mode("dark")
-ctk.set_default_color_theme("green")
-
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
 
         self.title("NeoTarefas")
-
         self.dados = carregar_json()
-
+        ctk.set_appearance_mode(self.dados["modo"])
+        ctk.set_default_color_theme("green")
+        
         largura_tela = self.winfo_screenwidth()
         altura_tela = self.winfo_screenheight()
 
@@ -32,6 +30,9 @@ class App(ctk.CTk):
         self._criar_sidebar()
         self._criar_area_principal()
 
+    def _dados_salvar(self):
+        salvar_json(self.dados)
+
     def _criar_sidebar(self):
         self.sidebar = ctk.CTkFrame(self, width=200, corner_radius=0)
         self.sidebar.grid(row=0,column=0,rowspan=2,sticky="nsew")
@@ -45,9 +46,15 @@ class App(ctk.CTk):
 
         self.btn_pagina2 = ctk.CTkButton(self.sidebar, text="Concluídas", command=lambda: self._trocar_pagina("pagina2"))
         self.btn_pagina2.grid(row=5,column=0,padx=20,pady=5,sticky="ew")
+        
+        def escolher_modo(modo):
+            ctk.set_appearance_mode(modo)
+            self.dados['modo'] = f"{modo}"
+            self._dados_salvar()
 
-    def _dados_salvar(self):
-        salvar_json(self.dados)
+        self.btn_tema = ctk.CTkOptionMenu(self.sidebar,values=["dark", "light"],command=escolher_modo)
+        self.btn_tema.set("Modo")
+        self.btn_tema.grid(row=11,column=0,padx=20,pady=20,sticky="ew")
 
     def _criar_area_principal(self):
         self.caixa = ctk.CTkFrame(self)
