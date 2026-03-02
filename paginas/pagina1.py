@@ -1,11 +1,11 @@
 import customtkinter as ctk
-import os
-from paginas.banco_json import carregar_json, salvar_json
 class Pagina1(ctk.CTkFrame):
     NOME = "pagina1"
 
-    def __init__(self, parent):
+    def __init__(self, parent, app):
         super().__init__(parent)
+        self.app = app
+
         self.grid_rowconfigure(1, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
@@ -27,11 +27,8 @@ class Pagina1(ctk.CTkFrame):
         self.frame_conteudo.grid_columnconfigure(0,weight=1)
 
         
-        dados = carregar_json()
-        for i in dados["tarefas"]:
+        for i in self.app.dados["tarefas"]:
             self._carregar_tarefa(tarefa=i)
-
-
 
     """
     ---
@@ -40,45 +37,59 @@ class Pagina1(ctk.CTkFrame):
             popup.grid(row=1,column=0)
     ---        
     """
-
+    
     def _carregar_tarefa(self,tarefa=None):
+
+        def finalizar_tarefa(self, texto, frame): 
+            self.app.dados["tarefas"].remove(texto.get("1.0","end").strip()) 
+            self.app.dados["concluidas"].append(texto.get("1.0","end").strip())
+            self.app._dados_salvar()
+
+            frame.destroy()        
+
         linha = self.frame_conteudo.grid_size()[1]
 
         tarefa_frame = ctk.CTkFrame(self.frame_conteudo)
         tarefa_frame.grid(row=linha, column=0, padx=10, pady=5, sticky="ew")
         tarefa_frame.grid_columnconfigure(1,weight=1)
 
-        btn = ctk.CTkButton(tarefa_frame,text="Feito",width=25,height=25, command=lambda: tarefa_frame.destroy())
-        btn.grid(row=0, column=0,padx=1,pady=5,sticky="w")
-
         texto = ctk.CTkTextbox(tarefa_frame,height=10)
         texto.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
         texto.insert("0.0", tarefa)
         texto.configure(state="disabled")      
+
+        btn = ctk.CTkButton(tarefa_frame,text="Feito",width=25,height=25, command=lambda: finalizar_tarefa(self,texto,tarefa_frame))
+        btn.grid(row=0, column=0,padx=1,pady=5,sticky="w")
     
     def _criar_tarefa(self):
-        dados = carregar_json()
-
-        def confirmar_tarefa(texto,botao):
-            dados["tarefas"].append(texto.get("1.0","end").strip())
-            salvar_json(dados)
+        
+        def confirmar_nome_tarefa(self, texto, botao):
+            self.app.dados["tarefas"].append(texto.get("1.0","end").strip())
+            self.app._dados_salvar()
 
             texto.configure(state="disabled")
             botao.destroy()
 
+        def finalizar_tarefa(self, texto, frame):
+            self.app.dados["tarefas"].remove(texto.get("1.0","end").strip()) 
+            self.app.dados["concluidas"].append(texto.get("1.0","end").strip())
+            self.app._dados_salvar()
+
+            frame.destroy()                    
+
         linha = self.frame_conteudo.grid_size()[1]
 
-        tarefa = ctk.CTkFrame(self.frame_conteudo)
-        tarefa.grid(row=linha, column=0, padx=10, pady=5, sticky="ew")
-        tarefa.grid_columnconfigure(1,weight=1)
+        tarefa_frame = ctk.CTkFrame(self.frame_conteudo)
+        tarefa_frame.grid(row=linha, column=0, padx=10, pady=5, sticky="ew")
+        tarefa_frame.grid_columnconfigure(1,weight=1)
 
-        btn = ctk.CTkButton(tarefa,text="Feito",width=25,height=25, command=lambda: tarefa.destroy())
-        btn.grid(row=0, column=0,padx=1,pady=5,sticky="w")
-
-        texto = ctk.CTkTextbox(tarefa,height=10)
+        texto = ctk.CTkTextbox(tarefa_frame,height=10)
         texto.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
 
-        btn2 = ctk.CTkButton(tarefa,text="++++",width=25,height=25, command=lambda: confirmar_tarefa(texto,btn2))
+        btn = ctk.CTkButton(tarefa_frame,text="Feito",width=25,height=25, command=lambda: finalizar_tarefa(self,texto, tarefa_frame))
+        btn.grid(row=0, column=0,padx=1,pady=5,sticky="w")
+
+        btn2 = ctk.CTkButton(tarefa_frame,text="Confirmar",width=25,height=25, command=lambda: confirmar_nome_tarefa(self,texto,btn2))
         btn2.grid(row=0, column=0,padx=1,pady=5,sticky="w")
 
 

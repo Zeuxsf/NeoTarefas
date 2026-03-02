@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from paginas.pagina1 import Pagina1
 from paginas.pagina2 import Pagina2
+from paginas.banco_json import carregar_json, salvar_json
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("green")
@@ -10,6 +11,8 @@ class App(ctk.CTk):
         super().__init__()
 
         self.title("NeoTarefas")
+
+        self.dados = carregar_json()
 
         largura_tela = self.winfo_screenwidth()
         altura_tela = self.winfo_screenheight()
@@ -43,6 +46,9 @@ class App(ctk.CTk):
         self.btn_pagina2 = ctk.CTkButton(self.sidebar, text="Concluídas", command=lambda: self._trocar_pagina("pagina2"))
         self.btn_pagina2.grid(row=5,column=0,padx=20,pady=5,sticky="ew")
 
+    def _dados_salvar(self):
+        salvar_json(self.dados)
+
     def _criar_area_principal(self):
         self.caixa = ctk.CTkFrame(self)
         self.caixa.grid(row=0, column=1,padx=20,pady=20,sticky="nsew")
@@ -52,7 +58,7 @@ class App(ctk.CTk):
         self.paginas: dict[str, ctk.CTkFrame] = {}
 
         for PaginaClasse in (Pagina1, Pagina2):
-            pagina = PaginaClasse(self.caixa)
+            pagina = PaginaClasse(self.caixa, self)
             self.paginas[pagina.NOME] = pagina
             pagina.grid(row=0,column=0,sticky="nsew")
 
@@ -61,7 +67,10 @@ class App(ctk.CTk):
     def _trocar_pagina(self, nome: str):
         pagina = self.paginas.get(nome)
         if pagina:
-            pagina.tkraise()            
+            pagina.tkraise()
+
+    def _atualizar_pagina(self, pagina: str):
+        ...                    
 
 if __name__ == "__main__":
     app = App()
