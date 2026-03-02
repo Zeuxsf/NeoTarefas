@@ -38,13 +38,14 @@ class Pagina1(ctk.CTkFrame):
     ---        
     """
     
-    def _carregar_tarefa(self,tarefa=None):
+    def _carregar_tarefa(self,tarefa=''):
 
         def finalizar_tarefa(self, texto, frame): 
             self.app.dados["tarefas"].remove(texto.get("1.0","end").strip()) 
             self.app.dados["concluidas"].append(texto.get("1.0","end").strip())
             self.app._dados_salvar()
 
+            self.app._atualizar_pagina("pagina2")
             frame.destroy()        
 
         linha = self.frame_conteudo.grid_size()[1]
@@ -74,7 +75,8 @@ class Pagina1(ctk.CTkFrame):
             self.app.dados["tarefas"].remove(texto.get("1.0","end").strip()) 
             self.app.dados["concluidas"].append(texto.get("1.0","end").strip())
             self.app._dados_salvar()
-
+            
+            self.app._atualizar_pagina("pagina2")
             frame.destroy()                    
 
         linha = self.frame_conteudo.grid_size()[1]

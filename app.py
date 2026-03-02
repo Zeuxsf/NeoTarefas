@@ -30,6 +30,7 @@ class App(ctk.CTk):
         self._criar_sidebar()
         self._criar_area_principal()
 
+
     def _dados_salvar(self):
         salvar_json(self.dados)
 
@@ -77,7 +78,21 @@ class App(ctk.CTk):
             pagina.tkraise()
 
     def _atualizar_pagina(self, pagina: str):
-        ...                    
+
+        if pagina == "pagina1":
+            for widget in self.paginas["pagina1"].frame_conteudo.winfo_children():
+                widget.destroy()
+            
+            for i in self.dados["tarefas"]:
+                self.paginas["pagina1"]._carregar_tarefa(tarefa=i)    
+        
+        if pagina == "pagina2":
+            for widget in self.paginas["pagina2"].frame_conteudo.winfo_children():
+                widget.destroy()
+            
+            for i in self.dados["concluidas"]:
+                self.paginas["pagina2"]._carregar_tarefa(tarefa=i)                              
+
 
 if __name__ == "__main__":
     app = App()

@@ -33,7 +33,8 @@ class Pagina2(ctk.CTkFrame):
             self.app.dados["concluidas"].remove(texto.get("1.0","end").strip()) 
             self.app.dados["tarefas"].append(texto.get("1.0","end").strip())
             self.app._dados_salvar()
-
+            
+            self.app._atualizar_pagina("pagina1")
             frame.destroy()        
 
         def excluir_tarefa(self, texto, frame):   
